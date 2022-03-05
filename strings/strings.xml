@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<string name="char_cohorts_label_cohorts">Cohorts and Companions</string>
+	<string name="char_cohorts_label_units">UNITS</string>
+
+	<string name="menu_reparse_hitpoints">Reparse Hit Points</string>
+
+	<string name="assistant_gm_cohort_ownership">Unable reassign ownership of cohort.</string>
+
+	<!-- Options -->
+	<string name="option_val_1">1</string>
+	<string name="option_val_2">2</string>
+	<string name="option_val_5">5</string>
+	<string name="option_val_10">10</string>
+	<string name="option_val_15">15</string>
+	<string name="option_val_20">20</string>
+	<string name="option_val_25">25</string>
+	<string name="option_val_30">30</string>
+	
+	<string name="option_custom_healthbar">Healthbar Customizer</string>
+	<string name="option_label_CHBO">Healthbar Offset</string>
+	<string name="option_label_CHBW">Healthbar Width</string>
+	<string name="option_label_CHBG">Background Gauge</string>
+	
+</root>
