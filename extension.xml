@@ -8,7 +8,7 @@
 <root release="3.0" version="3">
 	<properties>
 		<name>Feature: Custom HealthBar Widget</name>
-		<version>v1.0.3</version>
+		<version>v1.0.4beta</version>
 		<author>MostTornBrain</author>
 		<description>Add Healthbar configuration options to the CoreRPG ruleset</description>
 		<loadorder>150</loadorder>
@@ -19,6 +19,6 @@
 		<includefile source="strings/strings.xml" />
 	</base>
 
-	<announcement text="Custom HealthBar Widget 1.0.3 by MostTornBrain." font="emotefont" />
+	<announcement text="Custom HealthBar Widget 1.0.4beta by MostTornBrain." font="emotefont" />
 
 </root>

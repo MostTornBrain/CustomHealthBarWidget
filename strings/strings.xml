@@ -12,11 +12,14 @@
 	<string name="option_val_30">30</string>
 	<string name="option_val_light">Light</string>
 	<string name="option_val_dark">Dark</string>
+	<string name="option_val_custom">Custom</string>
+	<string name="option_val_custom_color">Color Picker</string>
 	
 	<string name="option_custom_healthbar">Healthbar Customizer</string>
 	<string name="option_label_CHBO">Healthbar Offset</string>
 	<string name="option_label_CHBW">Healthbar Width</string>
 	<string name="option_label_CHBG">Background Gauge</string>
 	<string name="option_label_CHBC">Background Gauge Color</string>
+	<string name="option_label_CHBS">Background Gauge Custom Color</string>
 	
 </root>

@@ -7,6 +7,10 @@ local updateHealthHelperOriginal;
 local updateHealthBarScaleOriginal;
 local TOKEN_HEALTHBAR_WIDTH_Original;
 local TOKEN_HEALTHBAR_HOFFSET_Original;
+local sCurrentColor = "C0E0E0E0";
+local bDialogShown = false;
+local bDontLoadColorDialg = false;   -- flag so we don't reload the color dialog when a final color is saved to the option.
+local sPrevColor;
 
 function onInit()
 	-- Save hooks to TokenManager values and function so we can re-use them as needed.
@@ -24,6 +28,14 @@ function onInit()
 	TokenManager.registerWidgetSet("health", {"healthbar", "healthdot", "healthbarframe"});
 	
 	registerOptions();
+	getSavedCustomColor();
+end
+
+function getSavedCustomColor()
+	sCurrentColor = OptionsManager.getOption("CHBS");
+	if (sCurrentColor == "custom") then
+		sCurrentColor = "C0E0E0E0";
+	end
 end
 
 function registerOptions()
@@ -35,14 +47,51 @@ function registerOptions()
 	OptionsManager.registerOption2("CHBG", false, "option_custom_healthbar", "option_label_CHBG", "option_entry_cycler", 
 			{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "on" });
 	OptionsManager.registerOption2("CHBC", false, "option_custom_healthbar", "option_label_CHBC", "option_entry_cycler", 
-			{ labels = "option_val_dark", values = "dark", baselabel = "option_val_light", baseval = "light", default = "light" });
+			{ labels = "option_val_dark|option_val_custom", values = "dark|custom", baselabel = "option_val_light", baseval = "light", default = "light" });
+	OptionsManager.registerOption2("CHBS", false, "option_custom_healthbar", "option_label_CHBS", "option_entry_cycler", 
+			{ labels = "option_val_custom_color", values = "custom", baselabel = "option_val_custom_color", baseval = sCurrentColor, default = sCurrentColor });
+
 	DB.addHandler("options.CHBO", "onUpdate", TokenManager.onOptionChanged);
 	DB.addHandler("options.CHBW", "onUpdate", TokenManager.onOptionChanged);
 	DB.addHandler("options.CHBG", "onUpdate", TokenManager.onOptionChanged);
 	DB.addHandler("options.CHBC", "onUpdate", TokenManager.onOptionChanged);
+	DB.addHandler("options.CHBS", "onUpdate", onOptionChanged);
 
 end
-		
+
+function onClose()
+	if bDialogShown then
+		Interface.dialogColorClose();
+	end
+end
+
+-- This only gets called for the custom color selection option
+function onOptionChanged(nodeOption)
+	if false == bDontLoadColorDialg then
+    	sPrevColor = sCurrentColor;
+		bDialogShown = Interface.dialogColor(onMainColorDialogCallback, sCurrentColor);
+	else
+		bDontLoadColorDialg = false;
+	end
+end
+
+-- Valid results are: "update", "ok", "cancel"
+function onMainColorDialogCallback(sResult, sColor)
+	sCurrentColor = sColor;
+	if sResult == "ok" or sResult == "cancel" then
+		bDialogShown = false;
+		if sResult == "cancel" then
+			sCurrentColor = sPrevColor;
+		end
+		-- We need to re-save the option since when it is clicked on, it gets set to the text "custom"
+		bDontLoadColorDialg = true;
+		OptionsManager.setOption("CHBS",sCurrentColor);
+	end
+
+	-- Trigger a refresh of the token health bars so the color changes are visible
+	TokenManager.onOptionChanged(nil); -- NOTE: TokenManager ignores the parameter, so we pass in nil
+end
+
 function updateHealthHelper(tokenCT, nodeCT)
 	local sOptTH;
 	
@@ -96,8 +145,10 @@ function updateHealthHelper(tokenCT, nodeCT)
 					local sOptCHBC = OptionsManager.getOption("CHBC");
 					if sOptCHBC == "dark" then
 						widgetHealthBarFrame.setColor("C0202020"); --  dark mode
-					else
+					elseif sOptCHBC == "light" then
 						widgetHealthBarFrame.setColor("C0E0E0E0"); -- light mode
+					else 
+						widgetHealthBarFrame.setColor(sCurrentColor); -- custom mode
 					end
 					widgetHealthBarFrame.setTooltipText(sStatus);
 					widgetHealthBarFrame.setVisible(sOptTH == "bar");
