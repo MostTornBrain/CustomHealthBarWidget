@@ -8,13 +8,10 @@
 <root release="3.0" version="3">
 	<properties>
 		<name>Feature: Custom HealthBar Widget</name>
-		<version>v1.0.1</version>
+		<version>v1.0.2</version>
 		<author>MostTornBrain</author>
 		<description>Add Healthbar configuration options to the CoreRPG ruleset</description>
 		<loadorder>150</loadorder>
-		<ruleset><name>4E</name></ruleset>
-		<ruleset><name>3.5E</name></ruleset>
-		<ruleset><name>PFRPG</name></ruleset>
 	</properties>
 
 	<base>
@@ -22,6 +19,6 @@
 		<includefile source="strings/strings.xml" />
 	</base>
 
-	<announcement text="Custom HealthBar Widget 1.0.1 by MostTornBrain." font="emotefont" />
+	<announcement text="Custom HealthBar Widget 1.0.2 by MostTornBrain." font="emotefont" />
 
 </root>

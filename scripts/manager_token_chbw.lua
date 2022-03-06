@@ -21,6 +21,7 @@ function onInit()
 	TokenManager.updateHealthBarScale = updateHealthBarScale;
 	
 	TokenManager.registerWidgetSet("healthbarframe", {"healthbarframe"});
+	TokenManager.registerWidgetSet("health", {"healthbar", "healthdot", "healthbarframe"});
 	
 	registerOptions();
 end
@@ -33,9 +34,13 @@ function registerOptions()
 			{ labels = "option_val_10|option_val_15|option_val_20|option_val_25|option_val_30", values = "10|15|20|25|30", baselabel = "option_val_off", baseval = "off", default = "20" });
 	OptionsManager.registerOption2("CHBG", false, "option_custom_healthbar", "option_label_CHBG", "option_entry_cycler", 
 			{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "on" });
+	OptionsManager.registerOption2("CHBC", false, "option_custom_healthbar", "option_label_CHBC", "option_entry_cycler", 
+			{ labels = "option_val_dark", values = "dark", baselabel = "option_val_light", baseval = "light", default = "light" });
 	DB.addHandler("options.CHBO", "onUpdate", TokenManager.onOptionChanged);
 	DB.addHandler("options.CHBW", "onUpdate", TokenManager.onOptionChanged);
 	DB.addHandler("options.CHBG", "onUpdate", TokenManager.onOptionChanged);
+	DB.addHandler("options.CHBC", "onUpdate", TokenManager.onOptionChanged);
+
 end
 		
 function updateHealthHelper(tokenCT, nodeCT)
@@ -82,13 +87,19 @@ function updateHealthHelper(tokenCT, nodeCT)
 				local widgetHealthBarFrame = aWidgets["healthbarframe"];
 				if not widgetHealthBarFrame then
 					widgetHealthBarFrame = tokenCT.addBitmapWidget("healthbar");
-					widgetHealthBarFrame.setTooltipText(sStatus);
-					widgetHealthBarFrame.sendToBack();
 					widgetHealthBarFrame.setName("healthbarframe");
 				end
 
 				if widgetHealthBarFrame then
 					widgetHealthBarFrame.sendToBack();
+
+					local sOptCHBC = OptionsManager.getOption("CHBC");
+					if sOptCHBC == "dark" then
+						widgetHealthBarFrame.setColor("C0202020"); --  dark mode
+					else
+						widgetHealthBarFrame.setColor("C0E0E0E0"); -- light mode
+					end
+					widgetHealthBarFrame.setTooltipText(sStatus);
 					widgetHealthBarFrame.setVisible(sOptTH == "bar");
 				end
 			end
